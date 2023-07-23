@@ -1,5 +1,5 @@
 let runningTotal = 0;
-let buffer = '0';
+let buffer = '';
 let previousOperator;
 
 const screen = document.querySelector('.main-display')
@@ -21,11 +21,11 @@ function handleSymbol(symbol)
 {
     switch(symbol){
         case 'C':
-            buffer = '0'
+            buffer = ''
             runningTotal = 0
             break;
         
-        case '=':
+        case 'Calculate':
             if(previousOperator == null)
             {
                 return
@@ -43,13 +43,13 @@ function handleSymbol(symbol)
             }
             else
             {
-                buffer = buffer.toString(0,buffer.length-1)
+                buffer = buffer.substring(0,buffer.length-1)
             }
             break;
         
         case '+':
-        case '-':
-        case 'x':
+        case '−':
+        case '×':
         case '÷':
             handleMath(symbol);
             break;
@@ -83,5 +83,42 @@ function handleMath(symbol)
 
 function flushOperation(intBuffer)
 {
-    
+    if(previousOperator === '+')
+    {
+        runningTotal += intBuffer;
+    }
+    else if(previousOperator === '−')
+    {
+        runningTotal -= intBuffer;
+    }
+    else if(previousOperator === '×')
+    {
+        runningTotal *= intBuffer;
+    }
+    else if(previousOperator === '÷')
+    {
+        runningTotal /= intBuffer;
+    }
 }
+
+function handleNumber(numStr)
+{
+    if(buffer === 0)
+    {
+        buffer = numStr;
+    }
+
+    else
+    {
+        buffer += numStr
+    }
+}
+
+function init()
+{
+    document.querySelector('.calci-buttons').addEventListener('click', function(event){
+        buttonClick(event.target.innerText);
+    })
+}
+
+init();
